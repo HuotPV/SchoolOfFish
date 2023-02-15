@@ -17,3 +17,6 @@ class Fish:
     def updateLocation(self):
         self.pos_x = self.pos_x + math.sin( (self.orientation * math.pi) / 180)
         self.pos_y = self.pos_y + math.cos( (self.orientation * math.pi) / 180)
+
+    def printFish(self):
+        print('Fish , x: {:.2f}, y: {:.2f}, orientation: {:.2f}, velocity: {:.2f}'.format(self.pos_x, self.pos_y, self.orientation, self.velocity))
