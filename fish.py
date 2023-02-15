@@ -1,5 +1,5 @@
 import random
-
+import math
 
 class Fish:
 
@@ -14,3 +14,6 @@ class Fish:
         # add a random change to the fish orientation
         self.orientation = self.orientation + random.gauss(0,20)
 
+    def updateLocation(self):
+        self.pos_x = self.pos_x + math.sin( (self.orientation * math.pi) / 180)
+        self.pos_y = self.pos_y + math.cos( (self.orientation * math.pi) / 180)
