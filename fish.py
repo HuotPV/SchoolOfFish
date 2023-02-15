@@ -21,8 +21,13 @@ class Fish:
         self.orientation = self.orientation + random.gauss(0,20)
 
     def updateLocation(self):
+        # calculate new x and y coordinates from previous coord. using velocity and orientation.
         self.pos_x = self.pos_x + math.cos( (self.orientation * math.pi) / 180)
         self.pos_y = self.pos_y + math.sin( (self.orientation * math.pi) / 180)
 
     def printFish(self):
+        # print every information about this fish
         print('Fish {}, x: {:.2f}, y: {:.2f}, orientation: {:.2f}, velocity: {:.2f}'.format(self.id, self.pos_x, self.pos_y, self.orientation, self.velocity))
+
+    def printFishCoords(self):
+        return self.pos_x, self.pos_y
