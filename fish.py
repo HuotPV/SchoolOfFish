@@ -30,4 +30,12 @@ class Fish:
         print('Fish {}, x: {:.2f}, y: {:.2f}, orientation: {:.2f}, velocity: {:.2f}'.format(self.id, self.pos_x, self.pos_y, self.orientation, self.velocity))
 
     def printFishCoords(self):
+        # return fish coordinates
         return self.pos_x, self.pos_y
+
+    def getDistance(self,fish):
+        # calculate the distance between two fish
+        x_dist = abs(self.pos_x - fish.pos_x)
+        y_dist = abs(self.pos_y - fish.pos_y)
+        
+        return math.sqrt(x_dist*x_dist + y_dist*y_dist)
