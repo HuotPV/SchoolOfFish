@@ -11,7 +11,7 @@ class Fish:
         self.pos_x = random.random()*10
         self.pos_y = random.random()*10
         self.velocity = 0.1
-        self.orientation = 0 # random.random()*360
+        self.orientation = random.random()*360
         self.id = next(Fish.id_iter)
         self.color = [random.random(),random.random(),random.random()]
         
