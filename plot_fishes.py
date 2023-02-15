@@ -14,7 +14,7 @@ class FishPlot:
         self.axes.set_ybound(-10,10)
 
     def addFish(self,fish):
-        self.axes.plot(fish.pos_x,fish.pos_y,marker=(3, 0, fish.orientation+30))
+        self.axes.plot(fish.pos_x,fish.pos_y,marker=(3, 0, fish.orientation+30), markeredgecolor = fish.color, markerfacecolor = fish.color)
 
     def save(self):
         plt.savefig('fishplot.png',dpi=300)
