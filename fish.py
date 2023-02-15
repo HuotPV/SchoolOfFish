@@ -9,3 +9,8 @@ class Fish:
         self.pos_y = random.random()*10
         self.velocity = 0.1
         self.orientation = random.random()*360
+
+    def randomMotion(self):
+        # add a random change to the fish orientation
+        self.orientation = self.orientation + random.gauss(0,20)
+
