@@ -10,9 +10,9 @@ class SchoolOfFish:
 
     def __init__(self,bluefish,redfish):
         self.fish_list = ()
-        for nf in  range(0,bluefish[1]):
+        for nf in  range(0,bluefish):
             self.fish_list = self.fish_list + (BlueFish(),)
-        for nf in  range(0,redfish[1]):
+        for nf in  range(0,redfish):
             self.fish_list = self.fish_list + (RedFish(),)
 
     def listFishNeighbours(self,fish):

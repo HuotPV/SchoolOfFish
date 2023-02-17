@@ -50,7 +50,6 @@ class Fish:
 
     def aimCenter(self,strength):
         # produce a velocity vector getting the fish closer to the center
-        print('Fish {} is too far !'.format(self.id))
         center_vel = [-1 * self.pos_x,-1 * self.pos_y]
         center_vel_norm = self.getDistanceCenter()
         if center_vel_norm == 0:
@@ -61,21 +60,17 @@ class Fish:
 
     def aimFish(self,fish):
         # method that modifies the velocity of a fish to get closer to a neighbourhing fish
-        print('Fish {} aims fish {}.'.format(self.id,fish.id))
         fish_vel = [fish.pos_x-self.pos_x, fish.pos_y-self.pos_y]
         fish_vel_norm = self.getDistance(fish)
-        print(self.getAngle(fish))
         if fish_vel_norm == 0:
             pass
         else:
             #fish_vel_normalized = [x * self.group_strength * self.getWeightAttract(fish) / fish_vel_norm for x in fish_vel]
             fish_vel_normalized = [x * self.group_strength / self.number_in_neighbourhood / fish_vel_norm for x in fish_vel]
             self.velocity = [self.velocity[i] + fish_vel_normalized[i] for i in range(len(self.velocity))]
-            print(fish_vel_normalized)
 
     def imitateFish(self,fish):
         # imitate a fish direction
-        print('Fish {} imitates fish {}.'.format(self.id,fish.id))
         vel_imitate = [fish.velocity[0]-self.velocity[1], fish.velocity[1]-self.velocity[1]]
         vel_imitate_norm = self.getDistance(fish)
 
@@ -88,7 +83,6 @@ class Fish:
 
     def avoidFish(self,fish):
         # a method that produce a vector pushing the fish away from a point
-        print('Fish {} avoids fish {}.'.format(self.id,fish.id))
         fish_vel = [self.pos_x - fish.pos_x, self.pos_y - fish.pos_y]
         fish_vel_norm = self.getDistance(fish)
         if fish_vel_norm == 0:
@@ -186,7 +180,6 @@ class Fish:
             fish_angle = 180 + math.acos(abs(x_fish)/self.getDistance(fish)) * 180 / math.pi 
         else:
             fish_angle = 360 - math.acos(abs(x_fish)/self.getDistance(fish)) * 180 / math.pi
-        print(fish_angle)
 
     def getXDist(self,fish):
         # calculate the distance between two fish
