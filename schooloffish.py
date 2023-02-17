@@ -87,6 +87,22 @@ class SchoolOfFish:
 
         return tooclose_list
     
+
+    def listCarnivorousFishNeighbours(self,fish):
+
+        [fish_pos_x,fish_pos_y] = fish.printFishCoords()
+        id = fish.id
+
+        neighbour_list = []
+
+        for a_fish in self.fish_list:
+            if id != a_fish.id:
+                dist = fish.getDistance(a_fish)
+                if dist < fish.aim_radius and a_fish.type == 'CarnivorousFish' :
+                    neighbour_list.append(a_fish)
+        
+        return neighbour_list
+
     def updateCount(self):
         nb = 0
         nr = 0

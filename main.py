@@ -16,7 +16,7 @@ def __main__():
 
     school_of_blue_fishes = SchoolOfIdenticalFish(blue_fishes)
     school_of_red_fishes = SchoolOfIdenticalFish(red_fishes)
-
+    school_of_carnivorous_fishes = SchoolOfIdenticalFish(carnivorous_fishes)
 
     my_plot = FishPlot()
 
@@ -32,6 +32,8 @@ def __main__():
         for fish in fishes:
             if fish.isalive == 1:
                 fish.randomMotion()
+
+                neighbour_carnivorous_fish = school.listCarnivorousFishNeighbours(fish)
 
                 if fish.type == 'RedFish':
                     neighbour_fish = school_of_red_fishes.listFishNeighbours(fish)
@@ -55,6 +57,8 @@ def __main__():
                     fish.imitateFish(gfish)
                 for cfish in tooclose_fish:
                     fish.avoidFish(cfish)
+                for ffish in neighbour_carnivorous_fish:
+                    fish.fleeFish(ffish)
         
         school.updateCount()
 

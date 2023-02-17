@@ -37,6 +37,7 @@ class Fish:
         self.type = 'Fish'
         self.size = 5
         self.isalive = 1
+        self.danger_fear = 10
 
 
 
@@ -62,28 +63,42 @@ class Fish:
 
     def aimFish(self,fish):
         # method that modifies the velocity of a fish to get closer to a neighbourhing fish
-        fish_vel = [fish.pos_x-self.pos_x, fish.pos_y-self.pos_y]
-        fish_vel_norm = self.getDistance(fish)
-        if fish_vel_norm == 0:
-            pass
-        else:
-            #fish_vel_normalized = [x * self.group_strength * self.getWeightAttract(fish) / fish_vel_norm for x in fish_vel]
-            fish_vel_normalized = [x * self.group_strength / self.number_in_neighbourhood / fish_vel_norm for x in fish_vel]
-            self.velocity = [self.velocity[i] + fish_vel_normalized[i] for i in range(len(self.velocity))]
+        if fish.isalive == 1:
+            fish_vel = [fish.pos_x-self.pos_x, fish.pos_y-self.pos_y]
+            fish_vel_norm = self.getDistance(fish)
+            if fish_vel_norm == 0:
+                pass
+            else:
+                #fish_vel_normalized = [x * self.group_strength * self.getWeightAttract(fish) / fish_vel_norm for x in fish_vel]
+                fish_vel_normalized = [x * self.group_strength / self.number_in_neighbourhood / fish_vel_norm for x in fish_vel]
+                self.velocity = [self.velocity[i] + fish_vel_normalized[i] for i in range(len(self.velocity))]
 
     def imitateFish(self,fish):
         # imitate a fish direction
-        vel_imitate = [fish.velocity[0]-self.velocity[1], fish.velocity[1]-self.velocity[1]]
-        vel_imitate_norm = self.getDistance(fish)
+        if fish.isalive == 1:
+            vel_imitate = [fish.velocity[0]-self.velocity[1], fish.velocity[1]-self.velocity[1]]
+            vel_imitate_norm = self.getDistance(fish)
 
-        if vel_imitate_norm == 0:
-            pass
-        else:
-            vel_imitate_normalized =  [x * self.imitate_strength/self.number_in_group  / vel_imitate_norm for x in vel_imitate]
-            self.velocity = [self.velocity[i] + vel_imitate_normalized[i] for i in range(len(self.velocity))]
+            if vel_imitate_norm == 0:
+                pass
+            else:
+                vel_imitate_normalized =  [x * self.imitate_strength/self.number_in_group  / vel_imitate_norm for x in vel_imitate]
+                self.velocity = [self.velocity[i] + vel_imitate_normalized[i] for i in range(len(self.velocity))]
 
 
     def avoidFish(self,fish):
+        # a method that produce a vector pushing the fish away from a point
+        if fish.isalive == 1:
+            fish_vel = [self.pos_x - fish.pos_x, self.pos_y - fish.pos_y]
+            fish_vel_norm = self.getDistance(fish)
+            if fish_vel_norm == 0:
+                pass
+            else:
+                #fish_vel_normalized = [x * self.agora_phobia * self.getWeightRepel(fish) / fish_vel_norm for x in fish_vel]
+                fish_vel_normalized = [x * self.agora_phobia  / fish_vel_norm for x in fish_vel]
+                self.velocity = [self.velocity[i] + fish_vel_normalized[i] for i in range(len(self.velocity))]
+
+    def fleeFish(self,fish):
         # a method that produce a vector pushing the fish away from a point
         fish_vel = [self.pos_x - fish.pos_x, self.pos_y - fish.pos_y]
         fish_vel_norm = self.getDistance(fish)
@@ -91,7 +106,7 @@ class Fish:
             pass
         else:
             #fish_vel_normalized = [x * self.agora_phobia * self.getWeightRepel(fish) / fish_vel_norm for x in fish_vel]
-            fish_vel_normalized = [x * self.agora_phobia  / fish_vel_norm for x in fish_vel]
+            fish_vel_normalized = [x * self.danger_fear  / fish_vel_norm for x in fish_vel]
             self.velocity = [self.velocity[i] + fish_vel_normalized[i] for i in range(len(self.velocity))]
 
 
@@ -219,6 +234,7 @@ class BlueFish(Fish):
         self.type = 'BlueFish'
         self.size = 5
         self.isalive = 1
+        self.danger_fear = 10
 
 class RedFish(Fish):
 
@@ -246,6 +262,7 @@ class RedFish(Fish):
         self.type = 'RedFish'
         self.size = 4
         self.isalive = 1
+        self.danger_fear = 10
 
 class CarnivorousFish(Fish):
 
@@ -274,27 +291,29 @@ class CarnivorousFish(Fish):
         self.hunger_max = 100
         self.hunger = rng()*self.hunger_max
         self.isalive = 1
+        self.danger_fear = 10
 
     def eatFish(self,fish):
-
-        fish.isalive = 0
-        self.size = self.size + 1
-        self.hunger = 0
+        if fish.isalive == 1:
+            fish.isalive = 0
+            self.hunger = 0
 
 
     def aimFish(self,fish):
-        if self.hunger > self.hunger_max:
-            # method that modifies the velocity of a fish to get closer to a neighbourhing fish
-            if self.getDistance(fish) < self.repel_radius:
-                self.eatFish(fish)
-            else:
-                fish_vel = [fish.pos_x-self.pos_x, fish.pos_y-self.pos_y]
-                fish_vel_norm = self.getDistance(fish)
-                if fish_vel_norm == 0:
-                    pass
+        if fish.isalive == 1:
+
+            if self.hunger > self.hunger_max:
+                # method that modifies the velocity of a fish to get closer to a neighbourhing fish
+                if self.getDistance(fish) < self.repel_radius:
+                    self.eatFish(fish)
                 else:
-                    fish_vel_normalized = [x * self.group_strength / max(fish.number_in_group,1) / fish_vel_norm for x in fish_vel]
-                    self.velocity = [self.velocity[i] + fish_vel_normalized[i] for i in range(len(self.velocity))]
+                    fish_vel = [fish.pos_x-self.pos_x, fish.pos_y-self.pos_y]
+                    fish_vel_norm = self.getDistance(fish)
+                    if fish_vel_norm == 0:
+                        pass
+                    else:
+                        fish_vel_normalized = [x * self.group_strength / max(fish.number_in_group,1) / fish_vel_norm for x in fish_vel]
+                        self.velocity = [self.velocity[i] + fish_vel_normalized[i] for i in range(len(self.velocity))]
 
 
     def update(self):
