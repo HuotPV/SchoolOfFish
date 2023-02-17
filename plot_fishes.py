@@ -34,5 +34,5 @@ class FishPlot:
         plt.savefig('figures/fishplot.png',dpi=300)
     
     def saveExit(self,dt):
-        plt.savefig('figures/fishplot_{:03d}.png'.format(dt),dpi=300)
+        plt.savefig('figures/fishplot_{:05d}.png'.format(dt),dpi=300)
         plt.close()

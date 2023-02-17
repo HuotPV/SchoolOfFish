@@ -114,7 +114,7 @@ class Fish:
         return math.sqrt(self.velocity[0]*self.velocity[0] + self.velocity[1]*self.velocity[1])
 
     def normalizeVelocity(self):
-        norm_veloc =  math.sqrt(self.velocity[0]*self.velocity[0] + self.velocity[1]*self.velocity[1])
+        norm_veloc =  self.getSpeed()
         if norm_veloc == 0:
             pass
         else:
@@ -124,20 +124,14 @@ class Fish:
     def update(self):
         # update velocity to aim for center if needed, normalize fish velocity, update fish orientation
         # calculate new x and y coordinates from previous coord. using velocity and orientation.
-
         if abs(self.pos_x) > self.border or abs(self.pos_y) > self.border:
             self.aimCenter( 2 *  max( [abs(self.pos_x)/self.border, abs(self.pos_y) / self.border]))
-
-
-
         self.normalizeVelocity()
         self.updateOrientation()
 
     def updatePosition(self,dt):
         self.pos_x = self.pos_x + self.velocity[0] * dt
         self.pos_y = self.pos_y + self.velocity[1] * dt
-
-
 
     def printFish(self):
         # print every information about this fish
@@ -203,3 +197,51 @@ class Fish:
         # calculate the distance between two fish
         y_dist = self.pos_y - fish.pos_y    
         return y_dist
+    
+
+class BlueFish(Fish):
+    id_iter = itertools.count()
+
+    def __init__(self, test = False):
+        self.border = 200
+        self.id = next(Fish.id_iter)
+        self.pos_x = rng()*self.border*2 - self.border
+        self.pos_y = rng()*self.border*2 - self.border
+        self.orientation = random.random()*360
+        self.speed = 5
+        self.velocity = [math.cos(self.orientation)*self.speed,math.sin(self.orientation)*self.speed]
+        self.rand_strength = 2
+        self.aim_radius = 40.0
+        self.group_strength = 2
+        self.imitate_radius = 10.0
+        self.imitate_strength = 2
+        self.repel_radius = 3.0
+        self.agora_phobia = 1
+        self.number_in_group = 0
+        self.number_in_neighbourhood = 0
+        self.color = [rng(),rng(),rng()]
+        self.color = [0.2,0.5,0.8]
+
+class RedFish(Fish):
+
+    id_iter = itertools.count()
+
+    def __init__(self, test = False):
+        self.border = 200
+        self.id = next(Fish.id_iter)
+        self.pos_x = rng()*self.border*2 - self.border
+        self.pos_y = rng()*self.border*2 - self.border
+        self.orientation = random.random()*360
+        self.speed = 7
+        self.velocity = [math.cos(self.orientation)*self.speed,math.sin(self.orientation)*self.speed]
+        self.rand_strength = 3
+        self.aim_radius = 30.0
+        self.group_strength = 2
+        self.imitate_radius = 8.0
+        self.imitate_strength = 2
+        self.repel_radius = 3.0
+        self.agora_phobia = 1
+        self.number_in_group = 0
+        self.number_in_neighbourhood = 0
+        self.color = [rng(),rng(),rng()]
+        self.color = [0.8,0.3,0.3]

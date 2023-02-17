@@ -1,12 +1,19 @@
 import fish
+from fish import Fish, BlueFish, RedFish
 
 class SchoolOfFish:
     # a SchoolOfFish contains all the fish
 
 
-    def __init__(self,fish):
-        self.fish_list = fish
+    #def __init__(self,fish):
+        #self.fish_list = fish
 
+    def __init__(self,bluefish,redfish):
+        self.fish_list = ()
+        for nf in  range(0,bluefish[1]):
+            self.fish_list = self.fish_list + (BlueFish(),)
+        for nf in  range(0,redfish[1]):
+            self.fish_list = self.fish_list + (RedFish(),)
 
     def listFishNeighbours(self,fish):
 

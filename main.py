@@ -8,11 +8,8 @@ def __main__():
     random.seed() # maybe we should put this elsewhere ?
     tstep = 0
 
-
-    fishes = (Fish(),Fish(),Fish(),Fish(),Fish(),Fish(),Fish(),Fish(),Fish(),Fish(),Fish(),Fish(),Fish(),Fish(),Fish(),Fish(),Fish(),Fish(),Fish(),Fish(),Fish(),Fish(),Fish(),Fish(),Fish(),Fish(),Fish(),Fish(),Fish(),Fish(),Fish(),Fish(),Fish(),Fish(),Fish(),Fish(),Fish(),Fish(),Fish(),Fish(),Fish(),Fish(),Fish(),Fish(),Fish())
-    #fishes = (Fish(test=True),Fish(test=True),Fish(test=True),Fish(test=True))
-
-    school = SchoolOfFish(fishes)
+    school = SchoolOfFish(('BlueFish',30),('RedFish',15))
+    fishes = school.fish_list
 
     my_plot = FishPlot()
 
@@ -23,7 +20,7 @@ def __main__():
     my_plot.saveExit(tstep)
 
 
-    for i in range(0,2000):
+    for i in range(0,3000):
         my_plot = FishPlot()
 
         for fish in fishes:
