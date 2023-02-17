@@ -34,7 +34,9 @@ class Fish:
         self.number_in_group = 0
         self.number_in_neighbourhood = 0
         self.color = [rng(),rng(),rng()]
-        self.color = [0.2,0.5,0.8]
+        self.type = 'Fish'
+        self.size = 5
+        self.isalive = 1
 
 
 
@@ -214,6 +216,9 @@ class BlueFish(Fish):
         self.number_in_neighbourhood = 0
         self.color = [rng(),rng(),rng()]
         self.color = [0.2,0.5,0.8]
+        self.type = 'BlueFish'
+        self.size = 5
+        self.isalive = 1
 
 class RedFish(Fish):
 
@@ -238,3 +243,71 @@ class RedFish(Fish):
         self.number_in_neighbourhood = 0
         self.color = [rng(),rng(),rng()]
         self.color = [0.8,0.3,0.3]
+        self.type = 'RedFish'
+        self.size = 4
+        self.isalive = 1
+
+class CarnivorousFish(Fish):
+
+    def __init__(self, test = False):
+        self.border = 200
+        self.id = next(Fish.id_iter)
+        self.pos_x = rng()*self.border*2 - self.border
+        self.pos_y = rng()*self.border*2 - self.border
+        self.orientation = random.random()*360
+        self.speed_normal = 4
+        self.speed_hunt = 10
+        self.speed = 4
+        self.velocity = [math.cos(self.orientation)*self.speed,math.sin(self.orientation)*self.speed]
+        self.rand_strength = 1
+        self.aim_radius = 60.0
+        self.group_strength = 6
+        self.imitate_radius = 0
+        self.imitate_strength = 0
+        self.repel_radius = 5
+        self.agora_phobia = 0
+        self.number_in_group = 0
+        self.number_in_neighbourhood = 0
+        self.color = [1,0.1,0]
+        self.size = 8
+        self.type = 'CarnivorousFish'
+        self.hunger_max = 100
+        self.hunger = rng()*self.hunger_max
+        self.isalive = 1
+
+    def eatFish(self,fish):
+
+        fish.isalive = 0
+        self.size = self.size + 1
+        self.hunger = 0
+
+
+    def aimFish(self,fish):
+        if self.hunger > self.hunger_max:
+            # method that modifies the velocity of a fish to get closer to a neighbourhing fish
+            if self.getDistance(fish) < self.repel_radius:
+                self.eatFish(fish)
+            else:
+                fish_vel = [fish.pos_x-self.pos_x, fish.pos_y-self.pos_y]
+                fish_vel_norm = self.getDistance(fish)
+                if fish_vel_norm == 0:
+                    pass
+                else:
+                    fish_vel_normalized = [x * self.group_strength / max(fish.number_in_group,1) / fish_vel_norm for x in fish_vel]
+                    self.velocity = [self.velocity[i] + fish_vel_normalized[i] for i in range(len(self.velocity))]
+
+
+    def update(self):
+        # update velocity to aim for center if needed, normalize fish velocity, update fish orientation
+        # calculate new x and y coordinates from previous coord. using velocity and orientation.
+        if abs(self.pos_x) > self.border or abs(self.pos_y) > self.border:
+            self.aimCenter( 2 *  max( [abs(self.pos_x)/self.border, abs(self.pos_y) / self.border]))
+        self.hunger = self.hunger + 1
+
+        if self.hunger > self.hunger_max:
+            self.speed = self.speed_hunt
+        else:
+            self.speed = self.speed_normal 
+
+        self.normalizeVelocity()
+        self.updateOrientation()

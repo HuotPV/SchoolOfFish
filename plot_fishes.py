@@ -18,7 +18,7 @@ class FishPlot:
         m = MarkerStyle("^")
         m._transform.scale(0.7, 1)
         m._transform.rotate_deg(fish.orientation-90)
-        self.axes.plot(fish.pos_x,fish.pos_y,marker=m, markeredgecolor = [0.1,0.1,0.1],linewidth=1, markerfacecolor = fish.color, markersize=5)
+        self.axes.plot(fish.pos_x,fish.pos_y,marker=m, markeredgecolor = [0.1,0.1,0.1],linewidth=1, markerfacecolor = fish.color, markersize=fish.size)
         self.axes.set_ybound(-225,225)
         self.axes.set_xbound(-225,225)
 
@@ -29,6 +29,9 @@ class FishPlot:
         self.axes.add_patch(circle1)
         self.axes.add_patch(circle2)
         self.axes.add_patch(circle3)
+
+    def addFishBudget(self,school):
+        self.axes.set_title('Blue fish: {}, Red fish: {}, CarnivorousFish: {}'.format(school.n_bluefish,school.n_redfish,school.n_carnivorousfish))
 
     def save(self):
         plt.savefig('figures/fishplot.png',dpi=300)

@@ -1,16 +1,22 @@
 from fish import Fish
-from schooloffish import SchoolOfFish
+from schooloffish import SchoolOfFish, SchoolOfIdenticalFish
 from plot_fishes import *
 import random
 import math
 from tqdm import tqdm
 
 def __main__():
-    random.seed() # maybe we should put this elsewhere ?
+    random.seed() 
     tstep = 0
 
-    school = SchoolOfFish(30,15)
+    school = SchoolOfFish(50,50,2)
     fishes = school.fish_list
+    blue_fishes, red_fishes, carnivorous_fishes = school.groupFishPerType()
+
+
+    school_of_blue_fishes = SchoolOfIdenticalFish(blue_fishes)
+    school_of_red_fishes = SchoolOfIdenticalFish(red_fishes)
+
 
     my_plot = FishPlot()
 
@@ -20,31 +26,47 @@ def __main__():
 
     my_plot.saveExit(tstep)
 
-    for i in tqdm (range (3000), desc="Running simulation..."):
+    for i in tqdm (range (2000), desc="Running simulation..."):
         my_plot = FishPlot()
 
         for fish in fishes:
-            fish.randomMotion()
-            neighbour_fish = school.listFishNeighbours(fish)
-            group_fish = school.listFishGroup(fish)
-            tooclose_fish = school.listFishTooClose(fish)
-            fish.number_in_neighbourhood = len(neighbour_fish)
+            if fish.isalive == 1:
+                fish.randomMotion()
 
-            for nfish in neighbour_fish:
-                fish.aimFish(nfish)
-            fish.number_in_group = len(group_fish)
-            for gfish in group_fish:
-                fish.imitateFish(gfish)
-            for cfish in tooclose_fish:
-                fish.avoidFish(cfish)
-            
+                if fish.type == 'RedFish':
+                    neighbour_fish = school_of_red_fishes.listFishNeighbours(fish)
+                    group_fish = school_of_red_fishes.listFishGroup(fish)
+                    tooclose_fish = school_of_red_fishes.listFishTooClose(fish)
+                elif fish.type == 'BlueFish':
+                    neighbour_fish = school_of_blue_fishes.listFishNeighbours(fish)
+                    group_fish = school_of_blue_fishes.listFishGroup(fish)
+                    tooclose_fish = school_of_blue_fishes.listFishTooClose(fish)
+                elif fish.type == 'CarnivorousFish':
+                    neighbour_fish = school.listFishNeighbours(fish)
+                    group_fish = school.listFishGroup(fish)
+                    tooclose_fish = school.listFishTooClose(fish)
+
+                fish.number_in_neighbourhood = len(neighbour_fish)
+
+                for nfish in neighbour_fish:
+                    fish.aimFish(nfish)
+                fish.number_in_group = len(group_fish)
+                for gfish in group_fish:
+                    fish.imitateFish(gfish)
+                for cfish in tooclose_fish:
+                    fish.avoidFish(cfish)
+        
+        school.updateCount()
 
         for fish in fishes:
-            fish.update()
-            my_plot.addFish(fish) 
-            #my_plot.addZones(fish)
-            fish.updatePosition(1)
-        
+            if fish.isalive == 1:
+                fish.update()
+                my_plot.addFish(fish) 
+                #my_plot.addZones(fish)
+                fish.updatePosition(1)
+
+        my_plot.addFishBudget(school)
+
         tstep = tstep + 1
         my_plot.saveExit(tstep)
     
