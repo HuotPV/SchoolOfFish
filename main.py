@@ -23,7 +23,8 @@ def __main__():
     for fish in fishes:
         my_plot.addFish(fish)
         #my_plot.addZones(fish)
-
+    
+    my_plot.addFishBudget(school)
     my_plot.saveExit(tstep)
 
     for i in tqdm (range (2000), desc="Running simulation..."):

@@ -9,10 +9,10 @@ class FishPlot:
         #plt.plot([-145,145],[0,0],'k--')
         #plt.plot([0,0],[-145,145],'k--')
         self.axes = plt.gca()
-        self.axes.set_xlabel('X')
         self.axes.set_xbound(-225,225)
-        self.axes.set_ylabel('Y')
         self.axes.set_ybound(-225,225)
+        self.axes.set_xticks([])
+        self.axes.set_yticks([])
 
     def addFish(self,fish):
         m = MarkerStyle("^")

@@ -294,7 +294,9 @@ class CarnivorousFish(Fish):
         self.danger_fear = 10
 
     def eatFish(self,fish):
-        if fish.isalive == 1:
+
+        if self.hunger > self.hunger_max and fish.isalive == 1:
+
             fish.isalive = 0
             self.hunger = 0
 
