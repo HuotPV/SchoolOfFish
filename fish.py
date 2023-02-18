@@ -20,7 +20,7 @@ class Fish:
             self.id = next(Fish.id_iter)
             self.pos_x = 0
             self.pos_y = -30 + self.id*30
-            self.orientation = 0 #random.random()*360
+            self.orientation = 0
 
         self.speed = 5
         self.velocity = [math.cos(self.orientation)*self.speed,math.sin(self.orientation)*self.speed]
@@ -213,39 +213,17 @@ class BlueFish(Fish):
     id_iter = itertools.count()
 
     def __init__(self, test = False):
-        self.border = 200
-        self.id = next(Fish.id_iter)
-        self.pos_x = rng()*self.border*2 - self.border
-        self.pos_y = rng()*self.border*2 - self.border
-        self.orientation = random.random()*360
-        self.speed = 5
-        self.velocity = [math.cos(self.orientation)*self.speed,math.sin(self.orientation)*self.speed]
-        self.rand_strength = 2
-        self.aim_radius = 40.0
-        self.group_strength = 2
-        self.imitate_radius = 10.0
-        self.imitate_strength = 2
-        self.repel_radius = 3.0
-        self.agora_phobia = 1
-        self.number_in_group = 0
-        self.number_in_neighbourhood = 0
-        self.color = [rng(),rng(),rng()]
+        super().__init__()
         self.color = [0.2,0.5,0.8]
         self.type = 'BlueFish'
-        self.size = 5
-        self.isalive = 1
-        self.danger_fear = 10
 
 class RedFish(Fish):
 
     id_iter = itertools.count()
 
     def __init__(self, test = False):
+        super().__init__()
         self.border = 200
-        self.id = next(Fish.id_iter)
-        self.pos_x = rng()*self.border*2 - self.border
-        self.pos_y = rng()*self.border*2 - self.border
-        self.orientation = random.random()*360
         self.speed = 7
         self.velocity = [math.cos(self.orientation)*self.speed,math.sin(self.orientation)*self.speed]
         self.rand_strength = 3
@@ -253,25 +231,15 @@ class RedFish(Fish):
         self.group_strength = 2
         self.imitate_radius = 8.0
         self.imitate_strength = 2
-        self.repel_radius = 3.0
-        self.agora_phobia = 1
-        self.number_in_group = 0
-        self.number_in_neighbourhood = 0
-        self.color = [rng(),rng(),rng()]
         self.color = [0.8,0.3,0.3]
         self.type = 'RedFish'
         self.size = 4
-        self.isalive = 1
-        self.danger_fear = 10
+
 
 class CarnivorousFish(Fish):
 
     def __init__(self, test = False):
-        self.border = 200
-        self.id = next(Fish.id_iter)
-        self.pos_x = rng()*self.border*2 - self.border
-        self.pos_y = rng()*self.border*2 - self.border
-        self.orientation = random.random()*360
+        super().__init__()
         self.speed_normal = 4
         self.speed_hunt = 10
         self.speed = 4
@@ -279,33 +247,27 @@ class CarnivorousFish(Fish):
         self.rand_strength = 1
         self.aim_radius = 60.0
         self.group_strength = 6
-        self.imitate_radius = 0
         self.imitate_strength = 0
-        self.repel_radius = 5
         self.agora_phobia = 0
-        self.number_in_group = 0
-        self.number_in_neighbourhood = 0
         self.color = [1,0.1,0]
         self.size = 8
         self.type = 'CarnivorousFish'
         self.hunger_max = 100
         self.hunger = rng()*self.hunger_max
-        self.isalive = 1
         self.danger_fear = 10
 
     def eatFish(self,fish):
 
         if self.hunger > self.hunger_max and fish.isalive == 1:
-
             fish.isalive = 0
             self.hunger = 0
 
 
     def aimFish(self,fish):
-        if fish.isalive == 1:
+        # method that modifies the velocity of a fish to get closer to a neighbourhing fish
 
+        if fish.isalive == 1:
             if self.hunger > self.hunger_max:
-                # method that modifies the velocity of a fish to get closer to a neighbourhing fish
                 if self.getDistance(fish) < self.repel_radius:
                     self.eatFish(fish)
                 else:
