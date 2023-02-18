@@ -7,8 +7,8 @@ class Fish:
 
     id_iter = itertools.count()
 
-    def __init__(self, test = False):
-        self.border = 200
+    def __init__(self, pond, test = False):
+        self.border = pond.border
 
         if not test:
             self.id = next(Fish.id_iter)
@@ -38,6 +38,7 @@ class Fish:
         self.size = 5
         self.isalive = 1
         self.danger_fear = 10
+        self.is_eatable = 1
 
 
 
@@ -108,6 +109,61 @@ class Fish:
             #fish_vel_normalized = [x * self.agora_phobia * self.getWeightRepel(fish) / fish_vel_norm for x in fish_vel]
             fish_vel_normalized = [x * self.danger_fear  / fish_vel_norm for x in fish_vel]
             self.velocity = [self.velocity[i] + fish_vel_normalized[i] for i in range(len(self.velocity))]
+
+
+    def listCarnivorousFishNeighbours(self,pond):
+
+        neighbour_list = []
+
+        for a_fish in pond.fish_list:
+            if self.id != a_fish.id and a_fish.isalive == 1:
+                dist = self.getDistance(a_fish)
+                if dist < self.aim_radius and a_fish.type == 'CarnivorousFish' :
+                    neighbour_list.append(a_fish)
+        
+        return neighbour_list
+
+    def listFishNeighbours(self,pond):
+
+        neighbour_list = []
+
+        for a_fish in pond.fish_list:
+            if self.id != a_fish.id and a_fish.isalive == 1:
+                dist = self.getDistance(a_fish)
+                if dist < self.aim_radius and dist >= self.imitate_radius and a_fish.type == self.type :
+                    neighbour_list.append(a_fish)
+
+        self.number_in_neighbourhood = len(neighbour_list)
+        return neighbour_list
+
+    def listFishGroup(self,pond):
+
+        neighbour_list = []
+
+        for a_fish in pond.fish_list:
+            if self.id != a_fish.id and a_fish.isalive == 1:
+                dist = self.getDistance(a_fish)
+                if dist < self.imitate_radius and dist >= self.repel_radius and a_fish.type == self.type :
+                    neighbour_list.append(a_fish)
+
+        self.number_in_group = len(neighbour_list)
+
+        return neighbour_list
+
+
+    def listFishTooClose(self,pond):
+        
+        tooclose_list = []
+
+        for a_fish in pond.fish_list:
+
+            if self.id != a_fish.id and a_fish.isalive == 1:
+                dist = self.getDistance(a_fish)
+                
+                if dist < self.repel_radius:
+                    tooclose_list.append(a_fish)
+
+        return tooclose_list
 
 
     def updateOrientation(self):
@@ -212,17 +268,36 @@ class Fish:
 class BlueFish(Fish):
     id_iter = itertools.count()
 
-    def __init__(self, test = False):
-        super().__init__()
+    def __init__(self,pond, test = False):
+        super().__init__(pond)
         self.color = [0.2,0.5,0.8]
         self.type = 'BlueFish'
+
+    def actions(self,pond):
+        # list of action for this type of fish
+        self.randomMotion()
+        fishs_in_neighbourhood = self.listFishNeighbours(pond)
+        fishs_in_group = self.listFishGroup(pond)
+        fishs_in_personnal_space = self.listFishTooClose(pond)
+        carnivorous_in_neighbourhood = self.listCarnivorousFishNeighbours(pond)
+
+        for n_fish in fishs_in_neighbourhood:
+            self.aimFish(n_fish)
+        for g_fish in fishs_in_group:
+            self.imitateFish(g_fish)
+        for p_fish in fishs_in_personnal_space:
+            self.avoidFish(p_fish)
+        for c_fish in carnivorous_in_neighbourhood:
+            self.fleeFish(c_fish)
+
+
 
 class RedFish(Fish):
 
     id_iter = itertools.count()
 
-    def __init__(self, test = False):
-        super().__init__()
+    def __init__(self,pond, test = False):
+        super().__init__(pond)
         self.border = 200
         self.speed = 7
         self.velocity = [math.cos(self.orientation)*self.speed,math.sin(self.orientation)*self.speed]
@@ -235,11 +310,27 @@ class RedFish(Fish):
         self.type = 'RedFish'
         self.size = 4
 
+    def actions(self,pond):
+        # list of action for this type of fish
+        self.randomMotion()
+        fishs_in_neighbourhood = self.listFishNeighbours(pond)
+        fishs_in_group = self.listFishGroup(pond)
+        fishs_in_personnal_space = self.listFishTooClose(pond)
+        carnivorous_in_neighbourhood = self.listCarnivorousFishNeighbours(pond)
+
+        for n_fish in fishs_in_neighbourhood:
+            self.aimFish(n_fish)
+        for g_fish in fishs_in_group:
+            self.imitateFish(g_fish)
+        for p_fish in fishs_in_personnal_space:
+            self.avoidFish(p_fish)
+        for c_fish in carnivorous_in_neighbourhood:
+            self.fleeFish(c_fish)
 
 class CarnivorousFish(Fish):
 
-    def __init__(self, test = False):
-        super().__init__()
+    def __init__(self,pond, test = False):
+        super().__init__(pond)
         self.speed_normal = 4
         self.speed_hunt = 10
         self.speed = 4
@@ -255,6 +346,7 @@ class CarnivorousFish(Fish):
         self.hunger_max = 100
         self.hunger = rng()*self.hunger_max
         self.danger_fear = 10
+        self.is_eatable = 0
 
     def eatFish(self,fish):
 
@@ -278,6 +370,33 @@ class CarnivorousFish(Fish):
                     else:
                         fish_vel_normalized = [x * self.group_strength / max(fish.number_in_group,1) / fish_vel_norm for x in fish_vel]
                         self.velocity = [self.velocity[i] + fish_vel_normalized[i] for i in range(len(self.velocity))]
+
+
+    def listEatableFishNeighbours(self,pond):
+
+        neighbour_list = []
+
+        for a_fish in pond.fish_list:
+            if id != a_fish.id and a_fish.isalive == 1 and a_fish.is_eatable == 1:
+                dist = self.getDistance(a_fish)
+                if dist < self.aim_radius :
+                    neighbour_list.append(a_fish)
+
+        return neighbour_list
+
+
+    def actions(self,pond):
+        # list of action for this type of fish
+        self.randomMotion()
+        fishs_in_neighbourhood = self.listEatableFishNeighbours(pond)
+        carnivorous_in_neighbourhood = self.listCarnivorousFishNeighbours(pond)
+
+        if self.hunger > self.hunger_max:
+            for n_fish in fishs_in_neighbourhood:
+                self.aimFish(n_fish)
+
+        for c_fish in carnivorous_in_neighbourhood:
+            self.fleeFish(c_fish)
 
 
     def update(self):
