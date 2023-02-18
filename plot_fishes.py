@@ -2,17 +2,20 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 import fish
 from matplotlib.markers import MarkerStyle
+import pathlib
+import os
 
 class FishPlot:
 
     def __init__(self):
-        #plt.plot([-145,145],[0,0],'k--')
-        #plt.plot([0,0],[-145,145],'k--')
         self.axes = plt.gca()
         self.axes.set_xbound(-225,225)
         self.axes.set_ybound(-225,225)
         self.axes.set_xticks([])
         self.axes.set_yticks([])
+        self.path = os.getcwd()
+        pathlib.Path(self.path + "/figures").mkdir(parents=True, exist_ok=True)
+
 
     def addFish(self,fish):
         m = MarkerStyle("^")
@@ -31,7 +34,7 @@ class FishPlot:
         self.axes.add_patch(circle3)
 
     def addFishBudget(self,school):
-        self.axes.set_title('Blue fish: {}, Red fish: {}, CarnivorousFish: {}'.format(school.n_bluefish,school.n_redfish,school.n_carnivorousfish))
+        self.axes.set_title('Blue fish: {}, Red fish: {}, Carnivorous Fish: {}'.format(school.n_bluefish,school.n_redfish,school.n_carnivorousfish))
 
     def save(self):
         plt.savefig('figures/fishplot.png',dpi=300)
