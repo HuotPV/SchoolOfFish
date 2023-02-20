@@ -368,7 +368,8 @@ class CarnivorousFish(Fish):
                     if fish_vel_norm == 0:
                         pass
                     else:
-                        fish_vel_normalized = [x * self.group_strength / max(fish.number_in_group,1) / fish_vel_norm for x in fish_vel]
+                        fish_vel_normalized = [x * self.group_strength / max(pow(fish.number_in_group,3),1) / fish_vel_norm for x in fish_vel]
+                        #fish_vel_normalized = [x * max(fish.number_in_group^3,1) / fish_vel_norm for x in fish_vel]
                         self.velocity = [self.velocity[i] + fish_vel_normalized[i] for i in range(len(self.velocity))]
 
 
@@ -387,11 +388,13 @@ class CarnivorousFish(Fish):
 
     def actions(self,pond):
         # list of action for this type of fish
-        self.randomMotion()
         fishs_in_neighbourhood = self.listEatableFishNeighbours(pond)
         carnivorous_in_neighbourhood = self.listCarnivorousFishNeighbours(pond)
 
-        if self.hunger > self.hunger_max:
+        if self.hunger < self.hunger_max:
+            self.randomMotion()
+
+        if self.hunger >= self.hunger_max:
             for n_fish in fishs_in_neighbourhood:
                 self.aimFish(n_fish)
 

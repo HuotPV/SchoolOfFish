@@ -9,7 +9,7 @@ def __main__():
     random.seed() 
     tstep = 0
 
-    pond = Pond(50,50,2)
+    pond = Pond(100,100,10)
     fishes = pond.fish_list
 
     my_plot = FishPlot(pond)
