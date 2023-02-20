@@ -1,4 +1,5 @@
 from fish import *
+import csv
 
 class Pond:
 
@@ -15,6 +16,8 @@ class Pond:
         self.n_bluefish = bluefish
         self.n_redfish = redfish
         self.n_carnivorousfish = carnivorousfish
+
+
 
     def groupFishPerType(self):
         # return lists containing a fishs with the same type

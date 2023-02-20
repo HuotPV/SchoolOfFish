@@ -14,9 +14,6 @@ class FishPlot:
         self.axes.set_ybound(-1.1 * self.border , 1.1 * self.border)
         self.axes.set_xticks([])
         self.axes.set_yticks([])
-        self.path = os.getcwd()
-        pathlib.Path(self.path + "/figures").mkdir(parents=True, exist_ok=True)
-
 
     def addFish(self,fish):
         m = MarkerStyle("^")
