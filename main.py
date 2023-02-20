@@ -5,6 +5,7 @@ import math
 from pond import Pond
 from tqdm import tqdm
 from write_status import Outfile
+from analysis import Analysis
 
 def __main__():
     random.seed() 
@@ -33,7 +34,6 @@ def __main__():
                 fish.actions(pond)
                 fish.update()
 
-
         for fish in fishes:
             if fish.isalive == 1:
                 my_plot.addFish(fish) 
@@ -47,7 +47,8 @@ def __main__():
         my_plot.saveExit(tstep)
         outfile.addFish(fishes,tstep)
 
-    
+    my_diag = Analysis(outfile.file_name,pond)
+    my_diag.analysis_set()
 
 
     #my_plot.save()
