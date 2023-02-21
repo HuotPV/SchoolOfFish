@@ -17,7 +17,6 @@ def __main__():
     outfile = Outfile(fishes)
     outfile.addFish(fishes,tstep)
 
-
     my_plot = FishPlot(pond)
 
     for fish in fishes:
