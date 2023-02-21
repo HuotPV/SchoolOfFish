@@ -416,3 +416,5 @@ class CarnivorousFish(Fish):
 
         self.normalizeVelocity()
         self.updateOrientation()
+
+
