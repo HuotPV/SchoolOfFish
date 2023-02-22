@@ -2,12 +2,17 @@ import pandas as pd
 import seaborn as sns
 import matplotlib as plt
 from pond import Pond
+import pathlib
+import os
 
 class Analysis:
 
     def __init__(self,path,pond):
+        self.path = os.getcwd() + "/diags"
         self.data = pd.read_csv(path)
         self.border = pond.border
+        pathlib.Path(self.path).mkdir(parents=True, exist_ok=True)
+
 
     def plot_fish_direction_distr(self):
         
@@ -17,7 +22,7 @@ class Analysis:
                                                                                                         # but normalization stops working ...
 
         fig = dist_plot.fig
-        fig.savefig("out_dir.png",dpi=300) 
+        fig.savefig(self.path+"/out_dir.png",dpi=300) 
 
 
     def plot_fish_groupsize_distr(self):
@@ -28,7 +33,7 @@ class Analysis:
         dist_plot = sns.histplot(data=grpsize_subset, x="groupsize", hue="type",binwidth=1)
 
         fig = dist_plot.get_figure()
-        fig.savefig("out_grpsize.png",dpi=300) 
+        fig.savefig(self.path+"/out_grpsize.png",dpi=300) 
 
     def plot_fish_location_pdf(self,type,border):
         
@@ -39,7 +44,7 @@ class Analysis:
         dis_plot.set(ylim=(-1.5*border, 1.5*border))
         dis_plot.set(xlim=(-1.5*border, 1.5*border))
         fig = dis_plot.fig
-        fig.savefig("out_location_pdf_"+type+".png",dpi=300) 
+        fig.savefig(self.path+"/out_location_pdf_"+type+".png",dpi=300) 
 
     def analysis_set(self):
         self.plot_fish_groupsize_distr()
