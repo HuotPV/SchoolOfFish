@@ -21,8 +21,7 @@ docker run --name my-fish -v ${PWD}:/app/outputs fish-python
 
 ## Manually:
 
-install the python packages listed in requirements.txt
-run main.py
+Install the python packages listed in requirements.txt, then run main.py.
 
 
 
