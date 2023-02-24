@@ -8,7 +8,7 @@ import os
 class Analysis:
 
     def __init__(self,path,pond):
-        self.path = os.getcwd() + "/diags"
+        self.path = os.getcwd() + "/outputs/diags"
         self.data = pd.read_csv(path)
         self.border = pond.border
         pathlib.Path(self.path).mkdir(parents=True, exist_ok=True)
@@ -55,7 +55,7 @@ class Analysis:
 
 if __name__ == "__main__":
     pond = Pond(0,0,0)
-    my_diag = Analysis('/home/pv/Documents/code/python/SchoolOfFish/outputs/fishs_status.csv',pond)
+    my_diag = Analysis(os.getcwd() + "/outputs.fishs_status.csv",pond)
     my_diag.plot_fish_groupsize_distr()
     my_diag.plot_fish_direction_distr()
     my_diag.plot_fish_location_pdf("BlueFish",my_diag.border)
