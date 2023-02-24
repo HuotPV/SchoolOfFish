@@ -5,27 +5,31 @@ Different types of fishes populate and evolves in a virtual pond.
 At every time step, each fish makes a series of modifications to its orientation in response to its environnement (number and types of fishs present around it) and update its position in order to a) get closer to distant friendly fishes, b) imitate nearby friendly fishes, c) avoid collision with other fishes, and d) flee predatory fishes.
 
 
-Requirements:
-Docker
+# Requirements:
 
-How to run:
-With docker:
-Build docker image:
+Docker or python3 with modules listed in requirements.txt
+
+# How to run:
+
+## With docker:
+
+#### Build docker image:
 docker build -t fish-python .
 
-Run docker image:
+#### Run docker image:
 docker run --name my-fish -v ${PWD}:/app/outputs fish-python
 
-Manually:
+## Manually:
+
 install the python packages listed in requirements.txt
 run main.py
 
 
 
-Fish class:
+# Fish class:
 Each specific fish class (BlueFish, RedFish, ...) inherits from the Fish class. The latter defines a set of attributes (velocity, position, colour, type ...) and methods used by most fishes.
 
-Actions includes:
+## Actions includes:
 - random motion: add a random velocity vector to the fish velocity.
 - list fish (several variations): return a list of fishes present in the neighbourhood of a fish.
 - aimFish: adds a velocity vector aiming towards another fish to a fish velocity.
@@ -33,7 +37,7 @@ Actions includes:
 - imitateFish: adds a close neighbouring fish velocity to a fish velocity.
 - fleeFish: same as avoidFish, but with a bigger radius.
 
-Specialized fish classes:
+# Specialized fish classes:
 Each fish subclass has its own attrbiutes value, some specific methods and a dedicated list of actions.
 BlueFish are the basic fish, identical to the default Fish.
 RedFish are similar to BlueFish, but have slighlty different attributes values (stronger random motion, weaker group behaviour, faster motion ...)
