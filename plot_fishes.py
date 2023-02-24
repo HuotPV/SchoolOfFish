@@ -9,13 +9,13 @@ class FishPlot:
 
     def __init__(self,pond):
         self.border = pond.border
+        self.path = os.getcwd() + "/outputs/figures"
         self.axes = plt.gca()
         self.axes.set_xbound(-1.1 * self.border , 1.1 * self.border)
         self.axes.set_ybound(-1.1 * self.border , 1.1 * self.border)
         self.axes.set_xticks([])
         self.axes.set_yticks([])
-        self.path = os.getcwd()
-        pathlib.Path(self.path + "/figures").mkdir(parents=True, exist_ok=True)
+        pathlib.Path(self.path).mkdir(parents=True, exist_ok=True)
 
 
     def addFish(self,fish):
@@ -38,8 +38,8 @@ class FishPlot:
         self.axes.set_title('Blue fish: {}, Red fish: {}, Carnivorous Fish: {}'.format(pond.n_bluefish,pond.n_redfish,pond.n_carnivorousfish))
 
     def save(self):
-        plt.savefig('figures/fishplot.png',dpi=300)
+        plt.savefig(self.path + '/fishplot.png',dpi=300)
     
     def saveExit(self,dt):
-        plt.savefig('figures/fishplot_{:05d}.png'.format(dt),dpi=300)
+        plt.savefig(self.path + '/fishplot_{:05d}.png'.format(dt),dpi=300)
         plt.close()
