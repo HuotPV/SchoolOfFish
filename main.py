@@ -25,7 +25,7 @@ def __main__():
     my_plot.addFishBudget(pond)
     my_plot.saveExit(tstep)
 
-    for i in tqdm (range (30), desc="Running simulation..."):
+    for i in tqdm (range (2000), desc="Running simulation..."):
         my_plot = FishPlot(pond)
 
         for fish in fishes:
