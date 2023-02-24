@@ -5,7 +5,7 @@ import os
 class Outfile:
 
     def __init__(self,fishs):
-        self.path = os.getcwd() + "/outputs"
+        self.path = os.getcwd() + "/outputs/data"
         self.name = 'fishs_status'
         self.ext = '.csv'
         self.file_name = self.path  + '/' + self.name + self.ext
