@@ -44,4 +44,4 @@ BlueFish and RedFish do not interact with one another, appart from avoiding coll
 CarnivorousFish have no group behaviour. When they are hungry, they hunt for fish until they manage to reach one and eat it.
 
 # Outputs:
-The program produces a .csv file describing the status of every fish at each time step, a snapshot of the simulation and a set of diagnostics.
+The program produces a .csv file describing the status of every fish at each time step, a series of snapshots of the simulation and a set of diagnostics.
