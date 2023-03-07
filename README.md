@@ -42,3 +42,6 @@ BlueFish are the basic fish, identical to the default Fish.
 RedFish are similar to BlueFish, but have slighlty different attributes values (stronger random motion, weaker group behaviour, faster motion ...)
 BlueFish and RedFish do not interact with one another, appart from avoiding collisions.
 CarnivorousFish have no group behaviour. When they are hungry, they hunt for fish until they manage to reach one and eat it.
+
+# Outputs:
+The program produces a .csv file describing the status of every fish at each time step, a snapshot of the simulation and a set of diagnostics.
