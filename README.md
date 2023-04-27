@@ -21,8 +21,7 @@ docker run --name my-fish -v ${PWD}:/app/outputs fish-python
 
 ## Manually:
 
-install the python packages listed in requirements.txt
-run main.py
+Install the python packages listed in requirements.txt, then run main.py.
 
 
 
@@ -43,3 +42,6 @@ BlueFish are the basic fish, identical to the default Fish.
 RedFish are similar to BlueFish, but have slighlty different attributes values (stronger random motion, weaker group behaviour, faster motion ...)
 BlueFish and RedFish do not interact with one another, appart from avoiding collisions.
 CarnivorousFish have no group behaviour. When they are hungry, they hunt for fish until they manage to reach one and eat it.
+
+# Outputs:
+The program produces a .csv file describing the status of every fish at each time step, a series of snapshots of the simulation and a set of diagnostics.
